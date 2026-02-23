@@ -14,21 +14,27 @@
     *{box-sizing:border-box}
     body{margin:0;color:var(--text);font:16px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
       background:radial-gradient(900px 420px at 5% -10%,#ff3e9a2e 0%,transparent 60%),radial-gradient(900px 420px at 98% 0%,#31dcff2a 0%,transparent 60%),linear-gradient(180deg,#070912,#0b1020 60%,#080a12);
-      min-height:100vh}
-    .wrap{max-width:1120px;margin:auto;padding:22px 16px 40px}
+      min-height:100vh;position:relative;overflow-x:hidden}
+    .orb{position:fixed;filter:blur(40px);z-index:0;pointer-events:none;opacity:.25}
+    .orb.one{width:320px;height:320px;border-radius:50%;background:#ff3e9a;left:-120px;top:20%}
+    .orb.two{width:340px;height:340px;border-radius:50%;background:#31dcff;right:-130px;top:8%}
+
+    .wrap{max-width:1120px;margin:auto;padding:22px 16px 40px;position:relative;z-index:1}
     .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
     .logo{font-weight:800;letter-spacing:.2px}
     .chip{padding:7px 11px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted);background:#ffffff10;font-size:.85rem}
 
-    .hero{background:linear-gradient(130deg,#ffffff0a,#ffffff05);border:1px solid var(--stroke);border-radius:20px;padding:20px 18px;margin-bottom:14px;backdrop-filter:blur(7px)}
+    .hero{background:linear-gradient(130deg,#ffffff14,#ffffff07);border:1px solid var(--stroke);border-radius:20px;padding:20px 18px;margin-bottom:14px;backdrop-filter:blur(12px);box-shadow:0 14px 36px #00000035}
     .hero h1{margin:0 0 8px;font-size:clamp(1.5rem,3.4vw,2.2rem);line-height:1.08}
     .hero p{margin:0;color:var(--muted)}
 
     .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
-    .card{background:var(--panel);border:1px solid var(--stroke);border-radius:18px;padding:16px;backdrop-filter:blur(8px);box-shadow:0 10px 30px #00000025}
+    .card{background:var(--panel);border:1px solid var(--stroke);border-radius:18px;padding:16px;backdrop-filter:blur(12px);box-shadow:0 10px 30px #00000025;transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease}
+    .card:hover{transform:translateY(-3px);box-shadow:0 16px 40px #00000045;border-color:#ffffff40}
     .section-sub{margin:-2px 0 12px;color:#a9b6d7;font-size:.92rem}
     h2{font-size:1rem;margin:0 0 10px;color:#dfe6ff}
-    .feed-item{padding:12px;border:1px dashed #ffffff2a;border-radius:12px;background:#ffffff08;margin-bottom:10px}
+    .feed-item{padding:12px;border:1px dashed #ffffff2a;border-radius:12px;background:#ffffff08;margin-bottom:10px;transition:background .2s ease,border-color .2s ease}
+    .feed-item:hover{background:#ffffff10;border-color:#ffffff44}
     .tiny{font-size:.85rem;color:#9cabc9}
     .footer-note{margin-top:14px;text-align:center;color:#96a3c7;font-size:.9rem}
     .credits{margin-top:8px;text-align:center;color:#8ea0ca;font-size:.86rem}
@@ -37,9 +43,12 @@
     a.read{color:#9fd8ff;text-decoration:none}
     a.read:hover{text-decoration:underline}
     @media (max-width:920px){.grid{grid-template-columns:1fr}}
+    @media (prefers-reduced-motion: reduce){.card,.feed-item{transition:none}}
   </style>
 </head>
 <body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
   <div class="wrap">
     <div class="header">
       <div class="logo">Good Vibes Corner</div>
