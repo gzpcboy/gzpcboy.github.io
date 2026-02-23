@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Good Vibes Corner</title>
-  <meta name="description" content="A clean, generic personal page with daily smiles and science headlines."/>
+  <meta name="description" content="A calm personal page with daily smiles and science headlines."/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <style>
     :root{
@@ -24,8 +24,9 @@
     .hero h1{margin:0 0 8px;font-size:clamp(1.5rem,3.4vw,2.2rem);line-height:1.08}
     .hero p{margin:0;color:var(--muted)}
 
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .card{background:var(--panel);border:1px solid var(--stroke);border-radius:18px;padding:16px;backdrop-filter:blur(8px)}
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+    .card{background:var(--panel);border:1px solid var(--stroke);border-radius:18px;padding:16px;backdrop-filter:blur(8px);box-shadow:0 10px 30px #00000025}
+    .section-sub{margin:-2px 0 12px;color:#a9b6d7;font-size:.92rem}
     h2{font-size:1rem;margin:0 0 10px;color:#dfe6ff}
     .feed-item{padding:12px;border:1px dashed #ffffff2a;border-radius:12px;background:#ffffff08;margin-bottom:10px}
     .tiny{font-size:.85rem;color:#9cabc9}
@@ -39,23 +40,25 @@
   <div class="wrap">
     <div class="header">
       <div class="logo">Good Vibes Corner</div>
-      <div class="chip">generic • clean • fun</div>
+      <div class="chip">bright • calm • curious</div>
     </div>
 
     <section class="hero">
-      <h1>Daily good vibes, one page.</h1>
-      <p>Short laughs + science updates, in a clean privacy-friendly layout.</p>
+      <h1>A little joy, a little wonder.</h1>
+      <p>Fresh laughs and science stories to start your scroll with something good.</p>
     </section>
 
     <main class="grid">
       <section class="card">
-        <h2>Dad Jokes (3)</h2>
+        <h2>Dad Jokes</h2>
+        <p class="section-sub">Three quick ones. No setup required.</p>
         <div id="jokes"><div class="tiny">Loading dad jokes…</div></div>
         <div class="tiny">Source: icanhazdadjoke API</div>
       </section>
 
       <section class="card">
-        <h2>Science Headlines (Top 5)</h2>
+        <h2>Science Headlines</h2>
+        <p class="section-sub">Top five stories from the latest space and science feed.</p>
         <div id="science-news"><div class="tiny">Loading science headlines…</div></div>
         <div class="tiny">Source: Spaceflight News API</div>
       </section>
