@@ -57,6 +57,12 @@
       </section>
 
       <section class="card full">
+        <h2>Dad Jokes (3)</h2>
+        <div id="jokes"><div class="tiny">Loading dad jokes…</div></div>
+        <div class="tiny">Source: icanhazdadjoke API</div>
+      </section>
+
+      <section class="card full">
         <h2>Notes</h2>
         <p>This page is intentionally generic and privacy-friendly.</p>
       </section>
@@ -67,6 +73,26 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    async function getDadJoke(){
+      const r = await fetch('https://icanhazdadjoke.com/', { headers: { Accept: 'application/json' }});
+      if(!r.ok) throw new Error('joke fetch failed');
+      return (await r.json()).joke;
+    }
+
+    async function loadJokes(){
+      const box = document.getElementById('jokes');
+      try{
+        const items = [];
+        for(let i=0;i<3;i++){
+          try{ items.push(await getDadJoke()); }
+          catch{ items.push('Why did the scarecrow win an award? Because he was outstanding in his field.'); }
+        }
+        box.innerHTML = items.map(j => `<div class="feed-item">😂 ${j}</div>`).join('');
+      } catch {
+        box.innerHTML = '<div class="feed-item">Could not load dad jokes right now.</div>';
+      }
+    }
 
     async function loadScienceNews(){
       const box = document.getElementById('science-news');
@@ -121,6 +147,7 @@
       }
     }
 
+    loadJokes();
     loadScienceNews();
     loadMag7();
   </script>
