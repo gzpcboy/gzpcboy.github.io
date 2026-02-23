@@ -4,71 +4,64 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Good Vibes Corner</title>
-  <meta name="description" content="A clean, generic personal page with a fun center feed."/>
+  <meta name="description" content="A clean, generic personal page with daily smiles and science headlines."/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <style>
     :root{
-      --bg:#080a12;--panel:#111627cc;--stroke:#ffffff22;--text:#eef2ff;--muted:#aeb8d6;
+      --bg:#080a12;--panel:#121a2bcc;--stroke:#ffffff22;--text:#eef2ff;--muted:#afbad9;
       --pink:#ff3e9a;--cyan:#31dcff;--violet:#7f5bff;
     }
-    *{box-sizing:border-box} body{margin:0;color:var(--text);font:16px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      background:radial-gradient(900px 420px at 5% -10%,#ff3e9a32 0%,transparent 60%),radial-gradient(900px 420px at 98% 0%,#31dcff2d 0%,transparent 60%),linear-gradient(180deg,#070912,#0b1020 60%,#080a12);
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--text);font:16px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background:radial-gradient(900px 420px at 5% -10%,#ff3e9a2e 0%,transparent 60%),radial-gradient(900px 420px at 98% 0%,#31dcff2a 0%,transparent 60%),linear-gradient(180deg,#070912,#0b1020 60%,#080a12);
       min-height:100vh}
-    .wrap{max-width:1100px;margin:auto;padding:22px 16px 38px}
-    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-    .logo{font-weight:800}.chip{padding:7px 11px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted);background:#ffffff10;font-size:.85rem}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .wrap{max-width:1120px;margin:auto;padding:22px 16px 40px}
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .logo{font-weight:800;letter-spacing:.2px}
+    .chip{padding:7px 11px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted);background:#ffffff10;font-size:.85rem}
+
+    .hero{background:linear-gradient(130deg,#ffffff0a,#ffffff05);border:1px solid var(--stroke);border-radius:20px;padding:20px 18px;margin-bottom:14px;backdrop-filter:blur(7px)}
+    .hero h1{margin:0 0 8px;font-size:clamp(1.5rem,3.4vw,2.2rem);line-height:1.08}
+    .hero p{margin:0;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .card{background:var(--panel);border:1px solid var(--stroke);border-radius:18px;padding:16px;backdrop-filter:blur(8px)}
-    .left{grid-column:span 3}.center{grid-column:span 6}.right{grid-column:span 3}.full{grid-column:span 12}
-    h1{font-size:clamp(1.4rem,3.2vw,2.1rem);margin:0 0 8px;line-height:1.07} h2{font-size:1rem;margin:0 0 10px;color:#dfe6ff}
-    p{margin:0;color:var(--muted)} .tag{display:inline-block;padding:5px 10px;border-radius:999px;border:1px solid var(--stroke);font-size:.82rem;margin:4px 5px 0 0;background:#ffffff0f}
+    h2{font-size:1rem;margin:0 0 10px;color:#dfe6ff}
     .feed-item{padding:12px;border:1px dashed #ffffff2a;border-radius:12px;background:#ffffff08;margin-bottom:10px}
     .tiny{font-size:.85rem;color:#9cabc9}
-    .stocks-table{width:100%;border-collapse:collapse;font-size:.92rem}
-    .stocks-table th,.stocks-table td{padding:8px 6px;border-bottom:1px solid #ffffff1c;text-align:left}
-    .up{color:#63f5a6}.down{color:#ff7f9f}
-    footer{margin-top:14px;text-align:center;color:#96a3c7;font-size:.9rem}
-    @media (max-width:920px){.left,.center,.right,.full{grid-column:span 12}}
+    .footer-note{margin-top:14px;text-align:center;color:#96a3c7;font-size:.9rem}
+    a.read{color:#9fd8ff;text-decoration:none}
+    a.read:hover{text-decoration:underline}
+    @media (max-width:920px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="header"><div class="logo">Good Vibes Corner</div><div class="chip">generic • clean • fun</div></div>
+    <div class="header">
+      <div class="logo">Good Vibes Corner</div>
+      <div class="chip">generic • clean • fun</div>
+    </div>
+
+    <section class="hero">
+      <h1>Daily good vibes, one page.</h1>
+      <p>Short laughs + science updates, in a clean privacy-friendly layout.</p>
+    </section>
 
     <main class="grid">
-      <section class="card left">
-        <h2>About</h2>
-        <h1>Just a friendly corner of the internet.</h1>
-        <p>Simple, calm, and positive. No oversharing, just good energy.</p>
-        <div>
-          <span class="tag">Minimal</span><span class="tag">Positive</span><span class="tag">Lighthearted</span>
-        </div>
-      </section>
-
-      <section class="card center">
-        <h2>Science Headlines (Top 5)</h2>
-        <div id="science-news"><div class="tiny">Loading science headlines…</div></div>
-        <div class="tiny">Source: Spaceflight News API</div>
-      </section>
-
-      <section class="card right">
-        <h2>Magnificent 7 Stocks</h2>
-        <div id="stocks"><div class="tiny">Loading stock prices…</div></div>
-        <div class="tiny">Source: Stooq (refreshed into local JSON)</div>
-      </section>
-
-      <section class="card full">
+      <section class="card">
         <h2>Dad Jokes (3)</h2>
         <div id="jokes"><div class="tiny">Loading dad jokes…</div></div>
         <div class="tiny">Source: icanhazdadjoke API</div>
       </section>
 
-      <section class="card full">
-        <h2>Notes</h2>
-        <p>This page is intentionally generic and privacy-friendly.</p>
+      <section class="card">
+        <h2>Science Headlines (Top 5)</h2>
+        <div id="science-news"><div class="tiny">Loading science headlines…</div></div>
+        <div class="tiny">Source: Spaceflight News API</div>
       </section>
     </main>
 
-    <footer>© <span id="year"></span> Good Vibes Corner</footer>
+    <div class="footer-note">© <span id="year"></span> Good Vibes Corner</div>
   </div>
 
   <script>
@@ -106,7 +99,7 @@
           return `<div class="feed-item">
             <div><strong>${item.title || 'Untitled'}</strong></div>
             <div class="tiny" style="margin-top:4px">${item.news_site || 'Unknown source'} • ${date}</div>
-            <div style="margin-top:6px"><a href="${item.url}" target="_blank" rel="noreferrer" style="color:#9fd8ff">Read article</a></div>
+            <div style="margin-top:6px"><a class="read" href="${item.url}" target="_blank" rel="noreferrer">Read article</a></div>
           </div>`;
         }).join('') || '<div class="feed-item">No science headlines available right now.</div>';
       } catch {
@@ -114,38 +107,8 @@
       }
     }
 
-    async function loadMag7(){
-      const box = document.getElementById('stocks');
-      const symbols = ['AAPL','MSFT','NVDA','AMZN','GOOGL','META','TSLA'];
-      try{
-        const res = await fetch('./data/mag7.json', { cache: 'no-store' });
-        if(!res.ok) throw new Error('stocks fetch failed');
-        const payload = await res.json();
-        const bySymbol = new Map((payload.items || []).map(r => [r.symbol, r]));
-
-        box.innerHTML = `
-          <table class="stocks-table">
-            <thead><tr><th>Symbol</th><th>Price</th><th>As of</th></tr></thead>
-            <tbody>
-              ${symbols.map(s => {
-                const r = bySymbol.get(s);
-                if(!r || r.price == null) return `<tr><td>${s}</td><td>—</td><td>—</td></tr>`;
-                return `<tr>
-                  <td>${s}</td>
-                  <td>$${Number(r.price).toFixed(2)}</td>
-                  <td>${r.date || ''} ${r.time || ''}</td>
-                </tr>`;
-              }).join('')}
-            </tbody>
-          </table>`;
-      } catch {
-        box.innerHTML = '<div class="feed-item">Could not load stock prices right now.</div>';
-      }
-    }
-
     loadJokes();
     loadScienceNews();
-    loadMag7();
   </script>
 </body>
 </html>
