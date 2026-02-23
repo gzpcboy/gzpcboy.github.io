@@ -53,7 +53,7 @@
       <section class="card right">
         <h2>Magnificent 7 Stocks</h2>
         <div id="stocks"><div class="tiny">Loading stock prices…</div></div>
-        <div class="tiny">Source: Financial Modeling Prep (demo)</div>
+        <div class="tiny">Source: Stooq (refreshed into local JSON)</div>
       </section>
 
       <section class="card full">
@@ -118,26 +118,22 @@
       const box = document.getElementById('stocks');
       const symbols = ['AAPL','MSFT','NVDA','AMZN','GOOGL','META','TSLA'];
       try{
-        const url = `https://financialmodelingprep.com/api/v3/quote/${symbols.join(',')}?apikey=demo`;
-        const res = await fetch(url);
+        const res = await fetch('./data/mag7.json', { cache: 'no-store' });
         if(!res.ok) throw new Error('stocks fetch failed');
-        const rows = await res.json();
-        const bySymbol = new Map((rows || []).map(r => [r.symbol, r]));
+        const payload = await res.json();
+        const bySymbol = new Map((payload.items || []).map(r => [r.symbol, r]));
 
         box.innerHTML = `
           <table class="stocks-table">
-            <thead><tr><th>Symbol</th><th>Price</th><th>Δ%</th></tr></thead>
+            <thead><tr><th>Symbol</th><th>Price</th><th>As of</th></tr></thead>
             <tbody>
               ${symbols.map(s => {
                 const r = bySymbol.get(s);
-                if(!r) return `<tr><td>${s}</td><td>—</td><td>—</td></tr>`;
-                const change = Number(r.changesPercentage || 0);
-                const cls = change >= 0 ? 'up' : 'down';
-                const sign = change >= 0 ? '+' : '';
+                if(!r || r.price == null) return `<tr><td>${s}</td><td>—</td><td>—</td></tr>`;
                 return `<tr>
                   <td>${s}</td>
-                  <td>$${Number(r.price || 0).toFixed(2)}</td>
-                  <td class="${cls}">${sign}${change.toFixed(2)}%</td>
+                  <td>$${Number(r.price).toFixed(2)}</td>
+                  <td>${r.date || ''} ${r.time || ''}</td>
                 </tr>`;
               }).join('')}
             </tbody>

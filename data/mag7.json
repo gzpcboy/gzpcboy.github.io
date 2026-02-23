@@ -1,0 +1,48 @@
+{
+  "source": "stooq",
+  "fetched_at_utc": "2026-02-23T01:12:45.379505Z",
+  "items": [
+    {
+      "symbol": "AAPL",
+      "price": 264.58,
+      "date": "2026-02-20",
+      "time": "22:00:19"
+    },
+    {
+      "symbol": "MSFT",
+      "price": 397.23,
+      "date": "2026-02-20",
+      "time": "22:00:19"
+    },
+    {
+      "symbol": "NVDA",
+      "price": 189.82,
+      "date": "2026-02-20",
+      "time": "22:00:19"
+    },
+    {
+      "symbol": "AMZN",
+      "price": 210.11,
+      "date": "2026-02-20",
+      "time": "22:00:19"
+    },
+    {
+      "symbol": "GOOGL",
+      "price": 314.98,
+      "date": "2026-02-20",
+      "time": "22:00:18"
+    },
+    {
+      "symbol": "META",
+      "price": 655.66,
+      "date": "2026-02-20",
+      "time": "22:00:18"
+    },
+    {
+      "symbol": "TSLA",
+      "price": 411.82,
+      "date": "2026-02-20",
+      "time": "22:00:18"
+    }
+  ]
+}
