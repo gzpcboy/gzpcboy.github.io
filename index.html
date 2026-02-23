@@ -21,10 +21,11 @@
     .left{grid-column:span 3}.center{grid-column:span 6}.right{grid-column:span 3}.full{grid-column:span 12}
     h1{font-size:clamp(1.4rem,3.2vw,2.1rem);margin:0 0 8px;line-height:1.07} h2{font-size:1rem;margin:0 0 10px;color:#dfe6ff}
     p{margin:0;color:var(--muted)} .tag{display:inline-block;padding:5px 10px;border-radius:999px;border:1px solid var(--stroke);font-size:.82rem;margin:4px 5px 0 0;background:#ffffff0f}
-    .btn{display:inline-block;margin-top:10px;padding:10px 13px;border-radius:12px;text-decoration:none;font-weight:700;background:linear-gradient(90deg,var(--pink),var(--violet));color:#fff}
     .feed-item{padding:12px;border:1px dashed #ffffff2a;border-radius:12px;background:#ffffff08;margin-bottom:10px}
     .tiny{font-size:.85rem;color:#9cabc9}
-    .comic img{max-width:100%;border-radius:12px;border:1px solid var(--stroke);background:#0b0f1e}
+    .stocks-table{width:100%;border-collapse:collapse;font-size:.92rem}
+    .stocks-table th,.stocks-table td{padding:8px 6px;border-bottom:1px solid #ffffff1c;text-align:left}
+    .up{color:#63f5a6}.down{color:#ff7f9f}
     footer{margin-top:14px;text-align:center;color:#96a3c7;font-size:.9rem}
     @media (max-width:920px){.left,.center,.right,.full{grid-column:span 12}}
   </style>
@@ -44,16 +45,15 @@
       </section>
 
       <section class="card center">
-        <h2>Center Feed · Dad Jokes + Comics</h2>
-        <div id="jokes"></div>
-        <div class="comic" id="comic"></div>
-        <div class="tiny">Sources: icanhazdadjoke.com API and xkcd JSON API</div>
+        <h2>Science Headlines (Top 5)</h2>
+        <div id="science-news"><div class="tiny">Loading science headlines…</div></div>
+        <div class="tiny">Source: Spaceflight News API</div>
       </section>
 
       <section class="card right">
-        <h2>Quick Links</h2>
-        <p>Use this space for socials, contact, or newsletter later.</p>
-        <a class="btn" href="https://github.com/gzpcboy" target="_blank" rel="noreferrer">GitHub</a>
+        <h2>Magnificent 7 Stocks</h2>
+        <div id="stocks"><div class="tiny">Loading stock prices…</div></div>
+        <div class="tiny">Source: Financial Modeling Prep (demo)</div>
       </section>
 
       <section class="card full">
@@ -68,43 +68,61 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    async function getDadJoke(){
-      const r = await fetch('https://icanhazdadjoke.com/', { headers: { Accept: 'application/json' }});
-      if(!r.ok) throw new Error('joke fetch failed');
-      return (await r.json()).joke;
-    }
-
-    async function loadJokes(){
-      const box = document.getElementById('jokes');
-      box.innerHTML = '<div class="tiny">Loading jokes…</div>';
-      const items = [];
-      for(let i=0;i<3;i++){
-        try{ items.push(await getDadJoke()); } catch { items.push('Why did the scarecrow win an award? Because he was outstanding in his field.'); }
-      }
-      box.innerHTML = items.map(j => `<div class="feed-item">😂 ${j}</div>`).join('');
-    }
-
-    async function loadComic(){
-      const c = document.getElementById('comic');
-      c.innerHTML = '<div class="tiny">Loading comic…</div>';
+    async function loadScienceNews(){
+      const box = document.getElementById('science-news');
       try{
-        const latest = await fetch('https://xkcd.com/info.0.json').then(r=>r.json());
-        const id = Math.max(1, Math.floor(Math.random() * latest.num));
-        const data = await fetch(`https://xkcd.com/${id}/info.0.json`).then(r=>r.json());
-        c.innerHTML = `
-          <div class="feed-item">
-            <div class="tiny">Comic #${data.num}</div>
-            <strong>${data.safe_title}</strong>
-            <div style="margin-top:8px"><img src="${data.img}" alt="${data.alt || data.safe_title}" loading="lazy"></div>
-            <div class="tiny" style="margin-top:6px">${(data.alt||'').replace(/</g,'&lt;')}</div>
+        const res = await fetch('https://api.spaceflightnewsapi.net/v4/articles/?limit=5&ordering=-published_at');
+        if(!res.ok) throw new Error('news fetch failed');
+        const data = await res.json();
+        const list = data.results || [];
+        box.innerHTML = list.map(item => {
+          const date = item.published_at ? new Date(item.published_at).toLocaleDateString() : '';
+          return `<div class="feed-item">
+            <div><strong>${item.title || 'Untitled'}</strong></div>
+            <div class="tiny" style="margin-top:4px">${item.news_site || 'Unknown source'} • ${date}</div>
+            <div style="margin-top:6px"><a href="${item.url}" target="_blank" rel="noreferrer" style="color:#9fd8ff">Read article</a></div>
           </div>`;
+        }).join('') || '<div class="feed-item">No science headlines available right now.</div>';
       } catch {
-        c.innerHTML = '<div class="feed-item">Could not load comic right now.</div>';
+        box.innerHTML = '<div class="feed-item">Could not load science headlines right now.</div>';
       }
     }
 
-    loadJokes();
-    loadComic();
+    async function loadMag7(){
+      const box = document.getElementById('stocks');
+      const symbols = ['AAPL','MSFT','NVDA','AMZN','GOOGL','META','TSLA'];
+      try{
+        const url = `https://financialmodelingprep.com/api/v3/quote/${symbols.join(',')}?apikey=demo`;
+        const res = await fetch(url);
+        if(!res.ok) throw new Error('stocks fetch failed');
+        const rows = await res.json();
+        const bySymbol = new Map((rows || []).map(r => [r.symbol, r]));
+
+        box.innerHTML = `
+          <table class="stocks-table">
+            <thead><tr><th>Symbol</th><th>Price</th><th>Δ%</th></tr></thead>
+            <tbody>
+              ${symbols.map(s => {
+                const r = bySymbol.get(s);
+                if(!r) return `<tr><td>${s}</td><td>—</td><td>—</td></tr>`;
+                const change = Number(r.changesPercentage || 0);
+                const cls = change >= 0 ? 'up' : 'down';
+                const sign = change >= 0 ? '+' : '';
+                return `<tr>
+                  <td>${s}</td>
+                  <td>$${Number(r.price || 0).toFixed(2)}</td>
+                  <td class="${cls}">${sign}${change.toFixed(2)}%</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>`;
+      } catch {
+        box.innerHTML = '<div class="feed-item">Could not load stock prices right now.</div>';
+      }
+    }
+
+    loadScienceNews();
+    loadMag7();
   </script>
 </body>
 </html>
